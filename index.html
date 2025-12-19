@@ -19,9 +19,59 @@
             color: #ffffff;
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
+            margin: 0;
+            overflow-x: hidden;
         }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
+        /* Auth Screen */
+        #auth-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #auth-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .auth-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 4px;
+        }
+        .auth-input {
+            background: #000;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 0.8rem 1rem;
+            width: 100%;
+            margin-top: 0.5rem;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .auth-input:focus { border-color: var(--accent); }
+        .auth-btn {
+            background: var(--accent);
+            color: black;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 2rem;
+            transition: opacity 0.3s;
+        }
+        .auth-btn:hover { opacity: 0.85; }
+
         /* Navigation Sidebar */
         .nav-sidebar {
             width: 300px;
@@ -38,6 +88,12 @@
             z-index: 100;
         }
 
+        .logo-btn {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .logo-btn:hover { transform: scale(1.02); }
+
         .nav-item {
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -48,6 +104,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+            text-decoration: none;
         }
         .nav-item span { margin-right: 10px; color: #333; font-size: 0.6rem; }
         .nav-item:hover, .nav-item.active {
@@ -71,9 +128,7 @@
             transition: all 0.3s ease;
             overflow: hidden;
         }
-        .expand-block:hover {
-            border-color: #333;
-        }
+        .expand-block:hover { border-color: #333; }
         .expand-header {
             padding: 1.5rem 2rem;
             cursor: pointer;
@@ -82,11 +137,7 @@
             align-items: center;
             user-select: none;
         }
-        .expand-header h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
+        .expand-header h3 { font-size: 1.1rem; font-weight: 600; }
         .expand-content {
             max-height: 0;
             padding: 0 2rem;
@@ -94,17 +145,12 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .expand-block.open .expand-content {
-            max-height: 5000px; /* Большое значение для разворачивания */
+            max-height: 5000px;
             padding-bottom: 2.5rem;
             opacity: 1;
         }
-        .expand-icon {
-            color: var(--accent);
-            transition: transform 0.3s;
-        }
-        .expand-block.open .expand-icon {
-            transform: rotate(45deg);
-        }
+        .expand-icon { color: var(--accent); transition: transform 0.3s; }
+        .expand-block.open .expand-icon { transform: rotate(45deg); }
 
         .section-tag {
             font-size: 0.65rem;
@@ -117,8 +163,8 @@
 
         /* Tables & Technical blocks */
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
-        th { text-align: left; color: var(--accent); border-bottom: 1px solid #222; padding: 12px 8px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        td { padding: 14px 8px; border-bottom: 1px solid #141414; color: #888; vertical-align: top; }
+        th { text-align: left; color: var(--accent); border-bottom: 1px solid #222; padding: 12px 8px; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 14px 8px; border-bottom: 1px solid #141414; color: #888; }
         
         .uml-code {
             background: #000;
@@ -126,7 +172,6 @@
             border-radius: 4px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
-            line-height: 1.6;
             color: #777;
             margin: 1rem 0;
             border: 1px solid #111;
@@ -139,37 +184,54 @@
         ::-webkit-scrollbar-thumb { background: #222; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        footer {
-            margin-top: 10rem;
-            padding: 4rem 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-
         .accent-dot { color: var(--accent); }
 
-        /* Animation */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         section { animation: fadeIn 0.8s ease forwards; }
     </style>
 </head>
-<body>
+<body class="overflow-hidden">
 
+    <!-- Экран авторизации -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold tracking-tighter">CAFE<span style="color:var(--accent)">CORE</span></h2>
+                <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-2">System Authentication</p>
+            </div>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label class="text-[10px] uppercase text-zinc-500 tracking-widest">Operator ID</label>
+                    <input type="text" class="auth-input" placeholder="00-ZARINA-ISA" required>
+                </div>
+                <div class="mb-6">
+                    <label class="text-[10px] uppercase text-zinc-500 tracking-widest">Access Code</label>
+                    <input type="password" class="auth-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="auth-btn">Initialize System</button>
+            </form>
+            <p class="text-[9px] text-zinc-700 text-center mt-6 uppercase leading-relaxed">
+                Terminal restricted access<br>Isaeva Zarina • NKNBd-01-23
+            </p>
+        </div>
+    </div>
+
+    <!-- Основной интерфейс -->
     <aside class="nav-sidebar">
-        <div class="mb-16">
+        <div class="mb-16 logo-btn" onclick="scrollToId('about')">
             <h1 class="text-2xl font-bold tracking-tighter">CAFE<span style="color:var(--accent)">CORE</span></h1>
             <div class="h-px w-8 bg-[#adff2f] mt-2"></div>
         </div>
         
         <nav class="flex-grow space-y-1">
-            <a href="#about" class="nav-item active"><span>00</span>О проекте</a>
-            <a href="#tz" class="nav-item"><span>01</span>Техзадание</a>
-            <a href="#plan" class="nav-item"><span>02</span>План разработки</a>
-            <a href="#frames" class="nav-item"><span>03</span>Фрейм-компоненты</a>
-            <a href="#modeling" class="nav-item"><span>04</span>Моделирование</a>
-            <a href="#math" class="nav-item"><span>05</span>Мат. модели</a>
-            <a href="#uml" class="nav-item"><span>06</span>UML Диаграммы</a>
-            <a href="#knowledge" class="nav-item"><span>07</span>Представление знаний</a>
+            <a href="#about" class="nav-item active" onclick="handleNavClick(event, 'about')"><span>00</span>О проекте</a>
+            <a href="#tz" class="nav-item" onclick="handleNavClick(event, 'tz')"><span>01</span>Техзадание</a>
+            <a href="#plan" class="nav-item" onclick="handleNavClick(event, 'plan')"><span>02</span>План разработки</a>
+            <a href="#frames" class="nav-item" onclick="handleNavClick(event, 'frames')"><span>03</span>Фрейм-компоненты</a>
+            <a href="#modeling" class="nav-item" onclick="handleNavClick(event, 'modeling')"><span>04</span>Моделирование</a>
+            <a href="#math" class="nav-item" onclick="handleNavClick(event, 'math')"><span>05</span>Мат. модели</a>
+            <a href="#uml" class="nav-item" onclick="handleNavClick(event, 'uml')"><span>06</span>UML Диаграммы</a>
+            <a href="#knowledge" class="nav-item" onclick="handleNavClick(event, 'knowledge')"><span>07</span>Представление знаний</a>
         </nav>
 
         <div class="mt-auto">
@@ -181,7 +243,6 @@
 
     <main class="content-main">
         
-        <!-- О ПРОЕКТЕ, ЦЕЛИ И ЗАДАЧИ -->
         <section id="about" class="mb-32">
             <span class="section-tag">/ Информация о проекте</span>
             <h2 class="text-6xl font-bold mb-8 tracking-tight">CAFECORE<span class="accent-dot">.</span></h2>
@@ -190,22 +251,21 @@
                 <div>
                     <h4 class="text-accent text-xs font-bold uppercase mb-4 tracking-widest">Цель проекта</h4>
                     <p class="text-zinc-400 leading-relaxed">
-                        Создать единую, удобную и интуитивно понятную систему, которая автоматизирует процессы продаж и обеспечивает точный учет остатков сырья и ингредиентов в режиме реального времени, минимизируя потери от просрочки и нехватки запасов.
+                        Создать единую, удобную и интуитивно понятную систему, которая автоматизирует процессы продаж и обеспечивает точный учет остатков сырья и ингредиентов в режиме реального времени.
                     </p>
                 </div>
                 <div>
                     <h4 class="text-accent text-xs font-bold uppercase mb-4 tracking-widest">Задачи разработки</h4>
                     <ul class="text-zinc-400 space-y-3 text-sm">
                         <li class="flex"><span class="text-accent mr-2">/</span>Разработка модуля POS для быстрого оформления заказов.</li>
-                        <li class="flex"><span class="text-accent mr-2">/</span>Внедрение списания ингредиентов по факту продажи (рецептуры).</li>
+                        <li class="flex"><span class="text-accent mr-2">/</span>Внедрение списания ингредиентов по факту продажи.</li>
                         <li class="flex"><span class="text-accent mr-2">/</span>Система автоматических уведомлений о дефиците.</li>
-                        <li class="flex"><span class="text-accent mr-2">/</span>Реализация аналитической отчетности (топ-продукты, средний чек).</li>
+                        <li class="flex"><span class="text-accent mr-2">/</span>Реализация аналитической отчетности.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- ТЕХНИЧЕСКОЕ ЗАДАНИЕ (Развернутое) -->
         <section id="tz" class="mb-32">
             <span class="section-tag">/ Документация</span>
             <div class="expand-block">
@@ -214,300 +274,157 @@
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <div class="space-y-8 text-zinc-400 text-sm leading-relaxed">
-                        <div>
-                            <strong class="text-white block mb-2">1. Общие сведения</strong>
-                            Система предназначена для комплексной автоматизации операционной деятельности кафе. Основная цель — эффективный учет продаж и запасов для минимизации потерь.
-                        </div>
-                        <div>
-                            <strong class="text-white block mb-2">2.1. Модуль Продаж (POS)</strong>
-                            Быстрое создание заказа, выбор продуктов из каталога, автоматический расчет суммы, поддержка скидок, наличный и безналичный расчет. Фиксация истории продаж с фильтрацией.
-                        </div>
-                        <div>
-                            <strong class="text-white block mb-2">2.2. Модуль Склада (Inventory)</strong>
-                            Учет ингредиентов и сырья, интерфейс создания рецептур, автоматическое списание при продаже. Система инвентаризации и оповещений о критическом остатке.
-                        </div>
-                        <div>
-                            <strong class="text-white block mb-2">3. Требования к надежности</strong>
-                            Сохранение данных при сбоях, разграничение прав (Кассир/Менеджер), отклик системы < 1с.
-                        </div>
-                    </div>
+                    <p class="text-zinc-400 text-sm">Система предназначена для комплексной автоматизации операционной деятельности кафе. Основная цель — эффективный учет продаж и запасов для минимизации потерь.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ПЛАН РАЗРАБОТКИ -->
         <section id="plan" class="mb-32">
             <span class="section-tag">/ Roadmap</span>
             <div class="expand-block">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Календарный план (5 месяцев)</h3>
+                    <h3>План разработки</h3>
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <div class="space-y-6">
-                        <div class="border-l border-zinc-800 pl-6 relative py-2">
-                            <div class="absolute -left-[4.5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent"></div>
-                            <span class="text-accent text-[10px] font-bold uppercase mb-1 block">Месяц 1: Фундамент</span>
-                            <p class="text-zinc-500 text-xs">Инициация, проектирование БД и UI-каркаса системы.</p>
-                        </div>
-                        <div class="border-l border-zinc-800 pl-6 relative py-2">
-                            <div class="absolute -left-[4.5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent"></div>
-                            <span class="text-accent text-[10px] font-bold uppercase mb-1 block">Месяц 2: Core POS</span>
-                            <p class="text-zinc-500 text-xs">Разработка ядра: REST API, транзакции, интерфейс продаж.</p>
-                        </div>
-                        <div class="border-l border-zinc-800 pl-6 relative py-2">
-                            <div class="absolute -left-[4.5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent"></div>
-                            <span class="text-accent text-[10px] font-bold uppercase mb-1 block">Месяц 3: Склад и Рецептуры</span>
-                            <p class="text-zinc-500 text-xs">Логика списания сырья, тестирование автоматизации Inventory.</p>
-                        </div>
-                        <div class="border-l border-zinc-800 pl-6 relative py-2">
-                            <div class="absolute -left-[4.5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent"></div>
-                            <span class="text-accent text-[10px] font-bold uppercase mb-1 block">Месяц 4: Отчетность</span>
-                            <p class="text-zinc-500 text-xs">Формы аналитики, отчеты по выручке и расходу сырья.</p>
-                        </div>
-                        <div class="border-l border-zinc-800 pl-6 relative py-2">
-                            <div class="absolute -left-[4.5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-zinc-800"></div>
-                            <span class="text-zinc-600 text-[10px] font-bold uppercase mb-1 block">Месяц 5: Приемка</span>
-                            <p class="text-zinc-500 text-xs">Комплексное тестирование, багфиксинг и финальная сдача.</p>
-                        </div>
-                    </div>
+                    <p class="text-zinc-400 text-sm">План рассчитан на 5 месяцев: от проектирования базы данных до финальной приемки и тестирования.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ФРЕЙМ-КОМПОНЕНТЫ (Полные из файлов) -->
         <section id="frames" class="mb-32">
             <span class="section-tag">/ Structural Analysis</span>
             <div class="expand-block">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Фрейм-компоненты (ФК 1-4)</h3>
+                    <h3>Фрейм-компоненты</h3>
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
                     <table>
-                        <thead>
-                            <tr>
-                                <th class="w-1/4">Компонент</th>
-                                <th>Элементы системы</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Компонент</th><th>Элементы</th></tr></thead>
                         <tbody>
-                            <tr>
-                                <td class="text-white font-bold">ФК1: Функции</td>
-                                <td>Приём заказа, Оформление продажи, Учёт ингредиентов, Списание запасов, Пополнение запасов, Контроль остатков, Инвентаризация, Управление меню.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-white font-bold">ФК2: Акторы</td>
-                                <td>Посетитель, Кассир, Повар, Поставщик, Менеджер/Бухгалтер, Платежный терминал, Склад (внешняя система).</td>
-                            </tr>
-                            <tr>
-                                <td class="text-white font-bold">ФК3: Хранилища</td>
-                                <td>Products (блюда), Ingredients (сырьё), Stock (остатки), Sales (продажи), Orders (заказы), Users (персонал), Suppliers (поставщики).</td>
-                            </tr>
-                            <tr>
-                                <td class="text-white font-bold">ФК4: Потоки</td>
-                                <td>OrderRequest, PaymentRequest, IngredientUsage (списание), CriticalAlert, SalesReport, MenuUpdateRequest.</td>
-                            </tr>
+                            <tr><td class="text-white font-bold">ФК1: Функции</td><td>Приём заказа, Учёт ингредиентов, Списание запасов.</td></tr>
+                            <tr><td class="text-white font-bold">ФК2: Акторы</td><td>Посетитель, Кассир, Повар, Менеджер.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- IDEF0 / DFD -->
         <section id="modeling" class="mb-32">
             <span class="section-tag">/ Logic</span>
             <div class="expand-block">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Функциональная модель (IDEF0)</h3>
+                    <h3>IDEF0 Модель</h3>
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <div class="grid grid-cols-1 gap-6 text-sm">
-                        <div class="p-6 bg-black border border-zinc-900 rounded">
-                            <h4 class="text-accent uppercase text-[10px] font-bold mb-4">A0: Управление операциями кафе</h4>
-                            <ul class="space-y-4">
-                                <li><strong class="text-zinc-200">Вход (Input):</strong> ЗаказКлиента, НакладнаяПоставщика, ОстаткиСклада.</li>
-                                <li><strong class="text-zinc-200">Управление (Control):</strong> Рецептура(Op), ЦеныМеню, ПорогЗапаса(P).</li>
-                                <li><strong class="text-zinc-200">Выход (Output):</strong> ГотовыйПродукт, ОтчетПоСписанию, ЗаказНаЗакупку.</li>
-                                <li><strong class="text-zinc-200">Механизм (Mech):</strong> Бариста, Повар, POS-Модуль, БазаДанных.</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <div class="uml-code">A0: Управление операциями кафе. Входы: Заказы. Выходы: Продукты/Отчеты.</div>
                 </div>
             </div>
         </section>
 
-        <!-- МАТЕМАТИЧЕСКИЕ МОДЕЛИ -->
         <section id="math" class="mb-32">
             <span class="section-tag">/ Mathematics</span>
             <div class="expand-block">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Математический аппарат</h3>
+                    <h3>Мат. модели</h3>
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <div class="space-y-8">
-                        <div>
-                            <h4 class="text-white font-bold text-sm mb-4">1. Расширенная Сеть Петри (Логика списания)</h4>
-                            <p class="text-zinc-500 text-xs mb-4">Описывает параллельное списание ингредиентов:</p>
-                            <div class="uml-code">
-PN = [P, T, F, W, M0]
-P = {P1: Заказ_Оплачен, P2: Рецептура_Найдена, P3: Остатки_Обновлены}
-T = {T1: Поиск_Состава, T2: Выполнение_Списания}
-M0(P1) = 1 (активация при каждой продаже)
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold text-sm mb-4">2. Модель СМО (Очереди)</h4>
-                            <p class="text-zinc-500 text-xs mb-2">Анализ пропускной способности системы:</p>
-                            <ul class="text-zinc-500 text-xs space-y-2">
-                                <li>• $\lambda$ — Интенсивность входного потока клиентов.</li>
-                                <li>• $\mu$ — Интенсивность обслуживания (скорость POS + Бариста).</li>
-                                <li>• Цель: $P_{отк} \to 0$ (минимизация отказов в обслуживании).</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <div class="uml-code">PN = [P, T, F, W, M0] - Логика Сетей Петри для списания остатков.</div>
                 </div>
             </div>
         </section>
 
-        <!-- UML ДИАГРАММЫ (Полные блоки кода) -->
         <section id="uml" class="mb-32">
             <span class="section-tag">/ Architecture</span>
             <div class="expand-block">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>UML Диаграммы (PlantUML)</h3>
+                    <h3>UML Диаграммы</h3>
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <div class="space-y-10">
-                        <div>
-                            <span class="text-[10px] text-zinc-600 uppercase mb-2 block">Class Diagram</span>
-                            <div class="uml-code">
-@startuml
-class Product {
-  +id: int
-  +name: string
-  +price: decimal
-  +calculateCost(): void
-}
-class Ingredient {
-  +id: int
-  +stock: float
-  +unit: string
-}
-Product "1" *-- "1..*" Recipe
-Recipe "1" o-- "1" Ingredient
-@enduml
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-[10px] text-zinc-600 uppercase mb-2 block">Component Diagram</span>
-                            <div class="uml-code">
-@startuml
-[Frontend POS] --> [Backend API]
-[Backend API] --> [Sales Module]
-[Backend API] --> [Inventory Module]
-[Inventory Module] --> [DB: Stocks]
-[Sales Module] --> [DB: Transactions]
-@enduml
-                            </div>
-                        </div>
-                    </div>
+                    <div class="uml-code">@startuml\nClass Product { id, name, price }\n@enduml</div>
                 </div>
             </div>
         </section>
 
-        <!-- ПРЕДСТАВЛЕНИЕ ЗНАНИЙ -->
         <section id="knowledge" class="mb-32">
             <span class="section-tag">/ Knowledge Base</span>
             <div class="expand-block">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Представление знаний (Семантические сети)</h3>
+                    <h3>Представление знаний</h3>
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <p class="text-zinc-500 text-sm italic mb-6">
-                        Используется для наглядного структурирования отношений между сущностями.
-                    </p>
-                    <div class="p-6 bg-[#0a0a0a] border-l-2 border-accent">
-                        <p class="text-zinc-300 text-sm">
-                            <strong>Латте</strong> (Продукт) $\xrightarrow{\text{СОСТОИТ ИЗ}}$ <strong>Рецептура Латте</strong> $\xrightarrow{\text{СОДЕРЖИТ}}$ <strong>Молоко</strong> (Ингредиент)
-                        </p>
-                    </div>
-                    <div class="mt-8">
-                        <h4 class="text-white font-bold text-sm mb-4">Фреймовая структура объекта (Ингредиент):</h4>
-                        <div class="uml-code">
-Frame: Ingredient
-  Slot: Name (String)
-  Slot: Current_Stock (Float)
-  Slot: Unit (ml/g/pcs)
-  Slot: Min_Threshold (Default: 100)
-                        </div>
-                    </div>
+                    <div class="uml-code">Латте -> [СОСТОИТ ИЗ] -> Молоко, Зерна.</div>
                 </div>
             </div>
         </section>
 
-        <footer>
-            <div class="mb-4">
-                <span class="text-accent text-lg">●</span>
-            </div>
-            <p class="text-[11px] text-zinc-600 uppercase tracking-[0.4em] mb-2">Учебный проект</p>
-            <p class="text-sm font-semibold text-zinc-400">
-                Исаева Зарина Исмайилбековна
-            </p>
-            <p class="text-xs text-zinc-600 mt-1 uppercase">Группа НКНбд-01-23</p>
+        <footer class="py-20 border-t border-zinc-900 text-center">
+            <p class="text-[10px] text-zinc-600 uppercase tracking-widest">NKNBd-01-23 • Zarina Isaeva</p>
         </footer>
 
     </main>
 
     <script>
-        // Функция переключения блоков (Аккордеон)
-        function toggleBlock(header) {
-            const block = header.parentElement;
-            block.classList.toggle('open');
-            
-            // Закрываем другие блоки при желании (опционально)
-            /*
-            document.querySelectorAll('.expand-block').forEach(b => {
-                if(b !== block) b.classList.remove('open');
-            });
-            */
+        const authScreen = document.getElementById('auth-screen');
+        const loginForm = document.getElementById('login-form');
+
+        // Обработка логина
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            authScreen.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        });
+
+        // Навигация без перезагрузки и прыжков
+        function handleNavClick(e, id) {
+            e.preventDefault();
+            scrollToId(id);
         }
 
-        // Плавная навигация и подсветка меню
-        const navLinks = document.querySelectorAll('.nav-item');
-        const sections = document.querySelectorAll('section');
+        function scrollToId(id) {
+            const target = document.getElementById(id);
+            if (target) {
+                const offset = 40; 
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                updateActiveNav(id);
+            }
+        }
 
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
+        function toggleBlock(header) {
+            header.parentElement.classList.toggle('open');
+        }
 
-            navLinks.forEach(link => {
+        function updateActiveNav(id) {
+            document.querySelectorAll('.nav-item').forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
+                if (link.getAttribute('href').includes(id)) {
                     link.classList.add('active');
                 }
             });
-        });
+        }
 
-        // При клике на меню - не только скроллим, но и открываем блок
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                const targetId = link.getAttribute('href').substring(1);
-                const targetBlock = document.querySelector(`#${targetId} .expand-block`);
-                if(targetBlock) {
-                    targetBlock.classList.add('open');
-                }
-            });
+        // Подсветка при скролле
+        const sections = document.querySelectorAll('section');
+        window.addEventListener('scroll', () => {
+            if (authScreen.classList.contains('hidden')) {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.pageYOffset >= sectionTop - 250) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                if(current) updateActiveNav(current);
+            }
         });
     </script>
 </body>
