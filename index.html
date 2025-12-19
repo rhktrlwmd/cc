@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent: #adff2f; /* Салатовый */
+            --accent: #adff2f;
             --bg: #050505;
             --surface: #0d0d0d;
             --border: #1a1a1a;
@@ -112,12 +112,27 @@
             transform: translateX(8px);
         }
 
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 500px;
+        }
+
+
         /* Content Area */
         .content-main {
             margin-left: 300px;
             padding: 6rem 4rem;
             max-width: 1100px;
         }
+
+        .doc-footer { border-top: 1px solid var(--border); background: #080808; padding: 4rem; margin-left: 80px; }
+        .doc-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .doc-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        .doc-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(173, 255, 47, 0.1); }
+        .doc-card h4 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 0.5rem; }
+        .doc-card p { font-size: 1.1rem; font-weight: 700; color: #fff; }
 
         /* Accordion / Expandable Blocks */
         .expand-block {
@@ -152,6 +167,36 @@
         .expand-icon { color: var(--accent); transition: transform 0.3s; }
         .expand-block.open .expand-icon { transform: rotate(45deg); }
 
+        .tz-section-card {
+            background: #0a0a0a;
+            border: 1px solid #141414;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+        .tz-section-card h4 {
+            color: var(--accent);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .tz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+        .tz-item {
+            background: #050505;
+            border: 1px solid #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+        .tz-item h5 { color: #adff2f; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .tz-item p { color: #666; font-size: 0.85rem; line-height: 1.6; }
+
         .section-tag {
             font-size: 0.65rem;
             color: var(--accent);
@@ -161,8 +206,24 @@
             display: block;
         }
 
+        .logout-trigger {
+            margin-top: auto;
+            color: #8d1b1b;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border);
+            transition: 0.3s;
+        }
+        .logout-trigger:hover { color: #ff4d4d; }
+
         /* Tables & Technical blocks */
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+        table { max-width: 1200px; width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
         th { text-align: left; color: var(--accent); border-bottom: 1px solid #222; padding: 12px 8px; font-size: 0.75rem; text-transform: uppercase; }
         td { padding: 14px 8px; border-bottom: 1px solid #141414; color: #888; }
         
@@ -197,21 +258,21 @@
         <div class="auth-card">
             <div class="mb-10 text-center">
                 <h2 class="text-3xl font-bold tracking-tighter">CAFE<span style="color:var(--accent)">CORE</span></h2>
-                <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-2">System Authentication</p>
+                <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-2">Система управления запасами и продажами кафе</p>
             </div>
             <form id="login-form">
                 <div class="mb-4">
-                    <label class="text-[10px] uppercase text-zinc-500 tracking-widest">Operator ID</label>
-                    <input type="text" class="auth-input" placeholder="00-ZARINA-ISA" required>
+                    <label class="text-[10px] uppercase text-zinc-500 tracking-widest">Email or Username</label>
+                    <input type="text" class="auth-input" placeholder="rhktrlwmd" required>
                 </div>
                 <div class="mb-6">
-                    <label class="text-[10px] uppercase text-zinc-500 tracking-widest">Access Code</label>
+                    <label class="text-[10px] uppercase text-zinc-500 tracking-widest">Password</label>
                     <input type="password" class="auth-input" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="auth-btn">Initialize System</button>
+                <button type="submit" class="auth-btn">Log in</button>
             </form>
             <p class="text-[9px] text-zinc-700 text-center mt-6 uppercase leading-relaxed">
-                Terminal restricted access<br>Isaeva Zarina • NKNBd-01-23
+                Terminal restricted access<br>Isaeva Zarina • NKNbd-01-23
             </p>
         </div>
     </div>
@@ -224,21 +285,17 @@
         </div>
         
         <nav class="flex-grow space-y-1">
-            <a href="#about" class="nav-item active" onclick="handleNavClick(event, 'about')"><span>00</span>О проекте</a>
+            <a href="#about" class="nav-item active" onclick="handleNavClick(event, 'about')">О проекте</a>
             <a href="#tz" class="nav-item" onclick="handleNavClick(event, 'tz')"><span>01</span>Техзадание</a>
             <a href="#plan" class="nav-item" onclick="handleNavClick(event, 'plan')"><span>02</span>План разработки</a>
-            <a href="#frames" class="nav-item" onclick="handleNavClick(event, 'frames')"><span>03</span>Фрейм-компоненты</a>
-            <a href="#modeling" class="nav-item" onclick="handleNavClick(event, 'modeling')"><span>04</span>Моделирование</a>
-            <a href="#math" class="nav-item" onclick="handleNavClick(event, 'math')"><span>05</span>Мат. модели</a>
-            <a href="#uml" class="nav-item" onclick="handleNavClick(event, 'uml')"><span>06</span>UML Диаграммы</a>
-            <a href="#knowledge" class="nav-item" onclick="handleNavClick(event, 'knowledge')"><span>07</span>Представление знаний</a>
+            <a href="#footer" class="nav-item" onclick="handleNavClick(event, 'footer')"><span>03</span>Документация проекта</a>
         </nav>
 
-        <div class="mt-auto">
-            <p class="text-[10px] text-zinc-600 uppercase tracking-widest leading-loose">
-                Исаева Зарина<br>НКНбд-01-23
-            </p>
+        <div id="logout-trigger" class="logout-trigger">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Exit System
         </div>
+        <p class="text-[10px] text-zinc-600 mt-6 uppercase leading-relaxed">ИСАЕВА ЗАРИНА • НКНбд-01-23<br>Система управления запасами и продажами кафе<br>2025</p>
     </aside>
 
     <main class="content-main">
@@ -257,10 +314,105 @@
                 <div>
                     <h4 class="text-accent text-xs font-bold uppercase mb-4 tracking-widest">Задачи разработки</h4>
                     <ul class="text-zinc-400 space-y-3 text-sm">
-                        <li class="flex"><span class="text-accent mr-2">/</span>Разработка модуля POS для быстрого оформления заказов.</li>
-                        <li class="flex"><span class="text-accent mr-2">/</span>Внедрение списания ингредиентов по факту продажи.</li>
-                        <li class="flex"><span class="text-accent mr-2">/</span>Система автоматических уведомлений о дефиците.</li>
-                        <li class="flex"><span class="text-accent mr-2">/</span>Реализация аналитической отчетности.</li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">1.</span>
+                            <span><b>Разработка модуля продаж (POS):</b> Реализовать быстрый интерфейс для оформления заказов, применения скидок и приема различных типов оплаты.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">2.</span>
+                            <span><b>Создание системы учета запасов (Inventory):</b> Внедрить функционал для списания ингредиентов по факту продажи готового продукта (расход по рецептуре).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">3.</span>
+                            <span><b>Управление рецептурами:</b> Разработать интерфейс для создания, редактирования и привязки состава готовых продуктов к списку сырья.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">4.</span>
+                            <span><b>Система оповещений:</b> Настроить автоматические уведомления менеджера о критически низких остатках ингредиентов.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">5.</span>
+                            <span><b>Разработка отчетности:</b> Реализовать отчеты по продажам (топ-продукты, средний чек) и списанию сырья за период.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-accent text-xs font-bold uppercase mb-4 tracking-widest">Целевая аудитория</h4>
+                    <p class="text-zinc-400 leading-relaxed">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Уровень</th>
+                                    <th>Аудитория</th>
+                                    <th>Роль в системе</th>
+                                </tr>
+                            </thead>
+                                <tr>
+                                    <td class="bold-cell">Основной</td>
+                                    <td class="bold-cell">Продавцы/Бариста</td>
+                                    <td>Быстрое оформление заказов, прием оплаты, отмена заказов.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold-cell">Вторичный</td>
+                                    <td class="bold-cell">Повара/Кухня</td>
+                                    <td>Получение уведомлений о новых заказах, отметка о готовности.</td>
+                                </tr>
+                                <tr>
+                                    <td class="bold-cell">Периферийный</td>
+                                    <td class="bold-cell">Менеджеры/Владельцы</td>
+                                    <td>Управление запасами, ввод новых ингредиентов, просмотр финансовой отчетности и аналитики.</td>
+                                </tr>
+                        </table>
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-accent text-xs font-bold uppercase mb-4 tracking-widest">Маркетинг-микс (4Р)</h4>
+                    <ul class="text-zinc-400 space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">1.</span>
+                            <span><b>Product(Продукт)</b> Единое облачное веб-приложение, доступное на стационарных POS-терминалах и мобильных устройствах (для инвентаризации).</span>
+                                <li class="flex items-start">
+                                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                    <span><b>Функция:</b> POS-интерфейс, модуль списания по рецептам, модуль поставщиков.</span>
+                                </li>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">2.</span>
+                            <span><b>Price(Цена)</b> Модель SaaS (Subscription as a Service), основанная на ежемесячной подписке.</span>
+                                <li class="flex items-start">
+                                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                    <span><b>Тарифы:</b> "Базовый" (только продажи), "Профи" (продажи + инвентаризация и отчеты), "Корпоративный" (для сети кафе).</span>
+                                </li>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">3.</span>
+                            <span><b>Place(Место распространения)</b> 
+                                <li class="flex items-start">
+                                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                    <span><b>POS-терминалы:</b> Установка на рабочие места продавцов.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                    <span><b>Облачный доступ:</b> Веб-интерфейс, доступный через любой браузер для менеджеров.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                    <span><b>Мобильное приложение:</b> Доступ к модулю инвентаризации для сотрудников склада.</span>
+                                </li>
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-3 mt-1 font-bold">4.</span>
+                            <span><b>Promotion(Продвижение)</b> Акцент на экономию и эффективность:</span>
+                                <li class="flex items-start">
+                                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                    <span><i>Слоган:</i> "Зарабатывайте больше, контролируйте всё."</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                    <span><i>Преимущества:</i> Сокращение потерь от порчи продуктов, снижение трудозатрат на ручной учет, устранение ошибок бариста при приеме заказов.</span>
+                                </li>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -268,13 +420,63 @@
 
         <section id="tz" class="mb-32">
             <span class="section-tag">/ Документация</span>
-            <div class="expand-block">
+            <div class="expand-block open">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Техническое задание (ТЗ)</h3>
+                    <h3 class="uppercase tracking-widest">Техническое задание</h3>
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <p class="text-zinc-400 text-sm">Система предназначена для комплексной автоматизации операционной деятельности кафе. Основная цель — эффективный учет продаж и запасов для минимизации потерь.</p>
+                    
+                    <div class="tz-section-card">
+                        <h4>1. Планирование UML диаграмм</h4>
+                        <p class="text-zinc-400 text-sm">На этапе проектирования системы управления запасами и продажами кофе создается структура, позволяющая отслеживать движение товара (кофе в зернах, расходники) от склада до чашки клиента. UML диаграммы помогают визуализировать процесс списания остатков при каждой продаже.</p>
+                        <br><img src="/Users/rhktrlwmd/Downloads/архитектура.png" width="500px">
+
+                    <div class="tz-section-card">
+                        <h4>2. Реализация логики системы</h4>
+                        <div class="tz-grid">
+                            <div class="tz-item">
+                                <h5>Реализация включает автоматизацию ключевых процессов:</h5>
+                                <ul class="text-zinc-400 space-y-3 text-sm">
+                                    <li class="flex items-start">
+                                        <span class="text-accent mr-3 mt-1 font-bold">1.</span>
+                                        <span><b>Продажа:</b> Выбор напитка → Списание ингредиентов со склада по тех. карте → Печать чека.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-accent mr-3 mt-1 font-bold">2.</span>
+                                        <span><b>Пополнение запасов:</b> Приемка кофе от поставщиков и обновление инвентаризационной ведомости.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-accent mr-3 mt-1 font-bold">3.</span>
+                                        <span><b>Аналитики:</b>Уведомление о критически низком уровне запасов (например, когда осталось менее 2 кг зерна.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    <div class="tz-section-card">
+                        <h4>3. В жизни (эксплуатация системы)</h4>
+                        <div class="tz-grid">
+                            <div class="tz-item">
+                                <p>Система используется в кофейнях для быстрого обслуживания гостей. Обеспечивается синхронизация между точками продаж и центральным складом, интеграция с платежными терминалами и ведение истории закупочных цен для контроля маржинальности.</p>
+                                <br><p><b>IDEF0 — Функциональная модель</b></p>
+                                <br><p>Распределение элементов для процесса «Управление продажами и запасами кофе»:</p>
+                            </div>
+                            <div class="tz-item">
+                                <table>
+                                    <thead>
+                                        <tr><th>Элемент</th><th>Описание для кофейной системы</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Вход(Input)</td><td>Заказы клиентов, поставки сырья (кофе, молоко), данные об инвентаризации.</td></tr>
+                                        <tr><td>Управление(Control)</td><td>Технологические карты (рецепты), правила охраны труда, налоговое законодательство, внутренние регламенты кофейни.</td></tr>
+                                        <tr><td>Механизм(Mechanism)</td><td>Бариста, POS-терминал, кофемашина, программное обеспечение (ПО), складской персонал.</td></tr>
+                                        <tr><td>Выход(Output)</td><td>Готовый напиток клиенту, фискальный чек, отчеты о прибыли, актуальные данные об остатках на складе.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -287,78 +489,692 @@
                     <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <p class="text-zinc-400 text-sm">План рассчитан на 5 месяцев: от проектирования базы данных до финальной приемки и тестирования.</p>
+                    <div class="tz-section-card">
+                        <h4>Этапы реализации (Roadmap)</h4>
+                        <div class="space-y-3 mt-4 text-xs font-mono uppercase tracking-wider text-zinc-500">
+                            <div class="flex justify-between border-b border-zinc-900 pb-2">
+                                <span>Месяц 1: Архитектура и БД</span>
+                                <span class="text-white">Planning</span>
+                            </div>
+                            <div class="flex justify-between border-b border-zinc-900 pb-2">
+                                <span>Месяц 2: Ядро POS и REST API</span>
+                                <span class="text-white">Core Dev</span>
+                            </div>
+                            <div class="flex justify-between border-b border-zinc-900 pb-2">
+                                <span>Месяц 3: Склад и Автосписание</span>
+                                <span class="text-white">Inventory logic</span>
+                            </div>
+                            <div class="flex justify-between border-b border-zinc-900 pb-2">
+                                <span>Месяц 4: Аналитика и Отчеты</span>
+                                <span class="text-white">BI Module</span>
+                            </div>
+                            <div class="flex justify-between pb-2">
+                                <span>Месяц 5: Тестирование и Приемка</span>
+                                <span style="color:var(--accent)">Finalization</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="frames" class="mb-32">
-            <span class="section-tag">/ Structural Analysis</span>
-            <div class="expand-block">
+        <section id="view-tz" class="hidden mb-32">
+            <button onclick="showView('main')" class="text-accent mb-10 uppercase text-[10px] tracking-widest">← Назад в главное меню</button>
+            <h2 class="text-4xl font-bold mb-8">Техническое задание</h2>
+            <div class="expand-block open">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Фрейм-компоненты</h3>
-                    <span class="expand-icon">+</span>
                 </div>
                 <div class="expand-content">
-                    <table>
-                        <thead><tr><th>Компонент</th><th>Элементы</th></tr></thead>
-                        <tbody>
-                            <tr><td class="text-white font-bold">ФК1: Функции</td><td>Приём заказа, Учёт ингредиентов, Списание запасов.</td></tr>
-                            <tr><td class="text-white font-bold">ФК2: Акторы</td><td>Посетитель, Кассир, Повар, Менеджер.</td></tr>
-                        </tbody>
-                    </table>
+                    <!-- 1. Общие сведения -->
+                    <div class="tz-section-card">
+                        <h4>1. Общие сведения</h4>
+                        <p class="text-zinc-400 text-sm">Система предназначена для комплексной автоматизации операционной деятельности кафе. Основные цели: эффективный учет продаж (POS) и запасов сырья (Inventory Management) для минимизации потерь и ускорения обслуживания.</p>
+                    </div>
+
+                    <!-- 2. ТРЕБОВАНИЯ К ФУНКЦИОНАЛУ -->
+                    <div class="tz-section-card">
+                        <h4>2. Требования к функционалу</h4>
+                        <div class="tz-grid">
+                            <div class="tz-item">
+                                <h5>2.1. Модуль Продаж (POS)</h5>
+                                <p>Быстрое создание заказа, автоматический расчет суммы, применение скидок, поддержка наличной и безналичной оплаты. Генерация уведомлений повару после оплаты.</p>
+                            </div>
+                            <div class="tz-item">
+                                <h5>2.2. Управление запасами</h5>
+                                <p>Автоматическое списание сырья при продаже по рецептурам (техкартам). Учет приходов, инвентаризация и корректировка остатков.</p>
+                            </div>
+                            <div class="tz-item border-l border-zinc-700">
+                                <h5>2.3. Аналитика и отчеты</h5>
+                                <p>Формирование отчетов по выручке, среднему чеку, топ-продуктам. ABC-анализ продаж и мониторинг расхода сырья в реальном времени.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. ТЕХНИЧЕСКИЕ ТРЕБОВАНИЯ -->
+                    <div class="tz-section-card">
+                        <h4>3. Технические требования</h4>
+                        <div class="tz-grid">
+                            <div class="tz-item">
+                                <h5>3.1. Технологический стек</h5>
+                                <p><b>Backend:</b> Node.js / REST API. <b>Database:</b> PostgreSQL. <b>Frontend:</b> Web-интерфейс (адаптивный дизайн). <b>Deployment:</b> Cloud-инфраструктура.</p>
+                            </div>
+                            <div class="tz-item">
+                                <h5>3.2. Надежность и безопасность</h5>
+                                <p>Сохранность данных при обрывах связи, ежедневное резервное копирование БД. Ограничение доступа к складским операциям для рядового персонала.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. ИНТЕРФЕЙС И БЕЗОПАСНОСТЬ -->
+                    <div class="tz-section-card">
+                        <h4>4. Пользовательские характеристики</h4>
+                        <div class="tz-grid">
+                            <div class="tz-item">
+                                <h5>4.1. Интерфейс (UI/UX)</h5>
+                                <p>Минимальное количество кликов для оформления заказа. Крупные элементы управления для сенсорных POS-терминалов. Темная тема оформления.</p>
+                            </div>
+                            <div class="tz-item">
+                                <h5>4.2. Система ролей</h5>
+                                <p><b>Кассир:</b> только продажи. <b>Менеджер:</b> полный доступ к закупкам, ценам и отчетам. <b>Повар:</b> просмотр очереди заказов.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. ТЕСТИРОВАНИЕ -->
+                    <div class="tz-section-card">
+                        <h4>5. Программа тестирования</h4>
+                        <table>
+                            <thead>
+                                <tr><th>Вид теста</th><th>Объект проверки</th><th>Критерий успеха</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Функциональный</td><td>Списание ингредиентов</td><td>Соответствие остатка техкарте (ошибка 0%)</td></tr>
+                                <tr><td>Нагрузочный</td><td>Обработка транзакций</td><td>Стабильная работа при 50+ заказах/час</td></tr>
+                                <tr><td>Юзабилити</td><td>Время заказа</td><td>Оформление заказа опытным юзером < 20 сек</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 6. КРИТЕРИИ ПРИЕМКИ -->
+                    <div class="tz-section-card">
+                        <h4>6. Критерии приемки и оценка качества</h4>
+                        <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                            <li>Реализация всех функциональных модулей (POS, Склад, Отчеты).</li>
+                            <li>Отсутствие критических ошибок при имитации "часа пик".</li>
+                            <li>Корректная работа системы автооповещений о низких остатках.</li>
+                            <li>Наличие документации пользователя и схемы базы данных.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="modeling" class="mb-32">
-            <span class="section-tag">/ Logic</span>
-            <div class="expand-block">
-                <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>IDEF0 Модель</h3>
-                    <span class="expand-icon">+</span>
-                </div>
-                <div class="expand-content">
-                    <div class="uml-code">A0: Управление операциями кафе. Входы: Заказы. Выходы: Продукты/Отчеты.</div>
-                </div>
             </div>
         </section>
 
-        <section id="math" class="mb-32">
-            <span class="section-tag">/ Mathematics</span>
-            <div class="expand-block">
-                <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Мат. модели</h3>
-                    <span class="expand-icon">+</span>
-                </div>
-                <div class="expand-content">
-                    <div class="uml-code">PN = [P, T, F, W, M0] - Логика Сетей Петри для списания остатков.</div>
-                </div>
-            </div>
-        </section>
+<section id="view-uml" class="hidden mb-32">
+    <button onclick="showView('main')" class="text-accent mb-10 uppercase text-[10px] tracking-widest">← Назад</button>
+    <h2 class="text-4xl font-bold mb-8">UML Диаграммы</h2>
+    <div class="tz-section-card">
+        <h3 class="text-4xl font-bold mb-8">Структурные (Static Structure)</h3>
+        <h4>1. Диаграмма классов</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/классы.png" width="50px">
+    </div>
+    <div class="tz-section-card">
+        <h4>2. Диаграмма компонентов</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/компоненты.png" width="50px">
+    </div>
+    <div class="tz-section-card">
+        <h4>3. Диаграмма объектов</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/объекты.png" width="200px">
+    </div>
+    <div class="tz-section-card">
+        <h4>4. Диаграмма пакетов</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/пакеты.png" width="50px">
+    </div>
+    <div class="tz-section-card">
+        <h4>5. Диаграмма развертывания</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/развертывания.png" width="200px">
+    </div>
+    <div class="tz-section-card">
+        <h4>6. Диаграмма композитной структуры</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/композит.png" width="200px">
+    </div>
 
-        <section id="uml" class="mb-32">
-            <span class="section-tag">/ Architecture</span>
-            <div class="expand-block">
-                <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>UML Диаграммы</h3>
-                    <span class="expand-icon">+</span>
-                </div>
-                <div class="expand-content">
-                    <div class="uml-code">@startuml\nClass Product { id, name, price }\n@enduml</div>
-                </div>
-            </div>
-        </section>
+    <div class="tz-section-card">
+        <h2 class="text-4xl font-bold mb-8">Поведенческие (Behavioral)</h3>
+        <h4>7. Диаграмма вариантов использования</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/варианты исп.png" width="50px">
+    </div>
+    <div class="tz-section-card">
+        <h4>8. Диаграмма последовательностей</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/посл.png" width="200px">
+    </div>
+    <div class="tz-section-card">
+        <h4>9. Диаграмма состояний</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/состояния.png" width="50px">
+    </div>
+    <div class="tz-section-card">
+        <h4>10. Диаграмма деятельности</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/деятельности.png" width="50px">
+    </div>
+    <div class="tz-section-card">
+        <h4>11. Временная диаграмма</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/временная.png" width="200px">
+    </div>
+    <div class="tz-section-card">
+        <h4>12. Диаграмма коммуникаций</h4>
+        <br><img src="/Users/rhktrlwmd/Downloads/коммуникаций.png" width="200px">
+    </div>
+    </div>
+</section>
 
-        <section id="knowledge" class="mb-32">
-            <span class="section-tag">/ Knowledge Base</span>
+<section id="view-frames" class="hidden mb-32">
+    <button onclick="showView('main')" class="text-accent mb-10 uppercase text-[10px] tracking-widest">← Назад</button>
+    <h2 class="text-4xl font-bold mb-8">Фрейм-компоненты</h2>
+    <div class="tz-section-card">
+        <p><b>IDEF0</b> — показывает <i>что делает система</i> (функции и их входы/выходы).
+        <br><b>DFD</b> — показывает <i>как движутся данные</i> между процессами и хранилищами.</p><br>
+                        <div class="tz-item">
+                            <h5>ФК «Функция»</h5>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Приём заказа</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Оформление продажи</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Учет ингредиентов</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Списание запасов при продаже</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Пополнение запасов</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Контроль критических остатков</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Формирование отчётов (продажи, остатки, прибыль)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Управление меню</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Управление сотрудниками (кассиры / повара)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Инвентаризация</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Внешняя сущность»</h5>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                                <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Посетитель кафе</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Кассир</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Повар</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Поставщик</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Бухгалтер / Менеджер</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Система платёжного терминала (банк)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Склад (как внешняя подсистема поставки)</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Хранилище данных»</h5>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Products — готовые блюда</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Ingredients — ингредиенты</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Stock — складские остатки</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Sales — продажи</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Orders — заказы</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Users — сотрудники</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Suppliers — поставщики</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Reports — отчёты</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Потоки данных»</h5>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                                <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>OrderRequest → данные заказа</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>PaymentRequest → оплата</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>PaymentResponse</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>StockUpdateRequest / StockUpdateResponse</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>IngredientUsage (списание)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>RefillRequest (пополнение запасов)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>CriticalAlert (низкий остаток)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>SalesReportRequest / SalesReport</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>InventoryReportRequest</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>MenuUpdateRequest</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <h4 style="color: #adff2f;">Диаграмма прецедентов</h4>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Роль» (Actors)</h5>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                                <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Кассир</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Повар</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Менеджер</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Поставщик</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Посетитель</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Платёжная система</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Прецедент» (Use Case)</h5>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                                <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Принять заказ</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Провести оплату</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Передать заказ на кухню</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Приготовить блюдо</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Списать ингредиенты</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Пополнить склад</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Управлять меню</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Просматривать отчеты</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Проводить инвентаризацию</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Получать уведомления о низких остатках</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Класс»</h5>
+                                <div class="tz-item">
+                                    <h4>Сущности:</h4>
+                                </div>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Products</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Ingredients</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>StockItem</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Order</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>OrderItem</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Sale</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>User</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Supplier</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Report</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Объект»</h5>
+                                <div class="tz-item">
+                                    <h4>Примеры объектов:</h4>
+                                </div>
+                                <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Ingredient: «Молоко», «Кофе», «Сыр»</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Product: «Капучино», «Сэндвич»</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Order: #1042</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>StockItem: «Кофе зерновой — 4 кг»</span>
+                            </li>
+                            </ul>
+                        </div>
+                        <div class="tz-item">
+                            <h5 style="color: #adff2f;">ФК «Отношения между системами»</h5>
+                            <ul class="text-zinc-500 text-sm space-y-2 list-disc pl-5">
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>POS-терминал ↔ Кассовая система</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Кухонный экран ↔ Заказ</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Склад ↔ Пополнение запасов</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span>Менеджер ↔ Отчётность</span>
+                            </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tz-section-card">
+                        <h2 style="color: #adff2f;">Диаграмма прецедентов</h2>
+                            <br><p>Показывает <i>кто</i> взаимодействует с системой и <i>какие действия</i> может выполнять. Нужна, чтобы описать функциональные требования: что система обязана уметь.</p>
+                        <br><img src="/Users/rhktrlwmd/Downloads/прецедентов.png" width="200px">
+                    </div>
+                    <div class="tz-section-card">
+                        <h3 style="color: #adff2f;">Диаграмма классов</h3>
+                            <br><p>Показывает структуру данных: сущности, атрибуты, связи. Нужна для проектирования базы данных, логики и API.</p>
+                        <br><img src="/Users/rhktrlwmd/Downloads/классовв.png" width="200px">
+                    </div>
+                    <div class="tz-section-card">
+                        <h3 style="color: #adff2f;">Диаграмма последовательности</h3>
+                            <br><p>Показывает <i>пошаговый процесс выполнения какого-то сценария</i>. Нужна, чтобы понять порядок вызовов, взаимодействие между модулями и логический поток.</p>
+                        <br><img src="/Users/rhktrlwmd/Downloads/последоват.png" width="200px">
+                    </div>
+                    <div class="tz-section-card">
+                        <h3 style="color: #adff2f;">Диаграмма компонентов</h3>
+                            <br><p>Показывает <i>архитектуру системы</i>: из каких модулей состоит и как они общаются.Нужна при проектировании софта и разделении системы на блоки.</p>
+                        <br><img src="/Users/rhktrlwmd/Downloads/компоненов.png" width="200px">
+                    </div>
+                    <div class="tz-section-card">
+                        <h3 style="color: #adff2f;">Контекстная диаграмма (минимальная)</h3>
+                            <br><p>Контекстная диаграмма показывает <i>границы системы, взаимодействия с внешними участниками</i> и <i>основные потоки данных</i>, выполняя роль общей схемы всей предметной области без раскрытия внутренней структуры.</p>
+                        <br><img src="/Users/rhktrlwmd/Downloads/контекст.png" width="200px">
+                    </div>
+    </div>
+</section>
+
+
+<section id="view-modeling" class="hidden mb-32">
+    <button onclick="showView('main')" class="text-accent mb-10 uppercase text-[10px] tracking-widest">← Назад</button>
+    <h2 class="text-4xl font-bold mb-8">Реализация</h2>
+    <div class="tz-section-card">
+        <h3 class="text-4xl font-bold mb-8"; style="color: #adff2f;">1. Математические модели</h3>
+        <div class="tz-item">
+        <h4 style="color: #adff2f;">1.1. Сети Петри (Расширение)</h4>
+        <p class="text-zinc-400 text-sm"><b>Назначение</b>: Моделирование последовательности и параллельности бизнес-процессов (прием заказа, приготовление, списание).</p>
+            <li class="flex items-start">
+                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                <span class="text-zinc-400 text-sm"><b>Применение</b>: Идеально для моделирования логики автоматического списания сырья со склада по рецептуре.</span>
+            </li>
+            <li class="flex items-start">
+                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                <span class="text-zinc-400 text-sm"><b>Элементы</b>: Позиции (состояния: ЗаказПринят, ИнгредиентыНаСкладе), Переходы (события: Оплата, Списание_сырья), Цветные Маркеры (токены: сам Заказ с данными о составе).</span>
+            </li>
+        </div>
+        <div class="tz-item">
+        <br><h4 style="color: #adff2f;">1.2. Системы массового обслуживания (СМО)</h4>
+        <p class="text-zinc-400 text-sm"><b>Назначение</b>: Анализ эффективности обслуживания клиентов и загрузки рабочих станций.</p>
+            <li class="flex items-start">
+                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                <span class="text-zinc-400 text-sm"><b>Применение</b>: Оценка времени ожидания в очереди и расчет оптимального количества персонала (бариста, повар).</span>
+            </li>
+            <li class="flex items-start">
+                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                <span class="text-zinc-400 text-sm"><b>Элементы</b>: Источники (Клиенты), Заявки (Заказы), Обслуживающие аппараты (Бариста, Повар), Очередь (Заказы, ожидающие приготовления), Параметры (интенсивность поступления \lambda, время обслуживания \mu).</span>
+            </li>
+            </div>
+            <div class="tz-item">
+                <br><h4 style="color: #adff2f;">1.3. Модели системной динамики</h4>
+                <p class="text-zinc-400 text-sm"><b>Назначение</b>: Долгосрочный анализ и прогнозирование агрегированных процессов.</p>
+                <li class="flex items-start">
+                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                    <span class="text-zinc-400 text-sm"><b>Применение</b>: Прогнозирование объемов закупок (RES), анализ влияния продаж (PR) на истощение запасов с течением времени.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                    <span class="text-zinc-400 text-sm"><b>Элементы</b>: Уровни (Накопители: УровеньЗапасаКофе, НакопленнаяВыручка), Потоки (Скорости: ПотокСписанияПоПродажам), Операторы (Op: управляющие функции, запускающие закупку).</span>
+                </li>
+            </div>
+            <div class="tz-item">
+                <br><h3 class="text-4xl font-bold mb-8"; style="color: #adff2f;">2. Динамическая модель процесса и представление знаний (ПЗ)</h3>
+                <div class="tz-item">
+                        <br><h4>2.1. Динамическая модель процесса списания запасов</h4>
+                        <p>Модель описывает логику автоматического списания ингредиентов (RES) при завершении заказа.</p>
+                        <table>
+                            <thead>
+                                <tr><th>Элемент</th><th>Роль в системе</th><th>Пример действия/состояния</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Процесс (PR)</td><td>PR.ЗакрытиеТранзакции</td><td>Весь цикл обработки оплаченного заказа.</td></tr>
+                                <tr><td>Операторы (Op)</td><td>Op.ПроверитьРецептуру</td><td>Функция, извлекающая из базы данных точные нормы расхода (количества) для каждого ингредиента.</td></tr>
+                                <tr><td>Агенты (Agent)</td><td>Agent.СлужбаСписания</td><td>Внутренний системный модуль, выполняющий команду списания (V).</td></tr>
+                                <tr><td>Ресурсы (RES)</td><td>RES.Ингредиент</td><td>Актуальный остаток сырья на складе (напр., RES.Молоко, RES.Кофе).</td></tr>
+                                <tr><td>Команды управления (V)</td><td>V.УменьшитьОстаток</td><td>Команда на запись новых данных об остатках в БД.</td></tr>
+                                <tr><td>Источники (Sender)</td><td>Sender.POS-Модуль</td><td>Отправляет сигнал "ЗаказОплачен" и P.СоставЗаказа.</td></tr>
+                                <tr><td>Приемники (Receiver)</td><td>Receiver.СкладскойУчет</td><td>Модуль БД, который принимает и обрабатывает V.УменьшитьОстаток.</td></tr>
+                                <tr><td>Параметры (P)</td><td>P.КоличествоПродано</td><td>Параметр, определяющий, сколько единиц продукта было продано.</td></tr>
+                                <tr><td>Перекрестки (Junction)</td><td>J.ПроверкаНаЛимит</td><td>Условие: Остаток RES > 0? (для предотвращения отрицательных остатков).</td></tr>
+                            </tbody>
+                        </table>
+                        <br><p class="text-zinc-400 text-sm"><b>Краткая логика:</b>Когда <b>Sender.POS-Модуль</b> посылает сигнал <b>"ЗаказОплачен"</b>, <b>Op.ПроверитьРецептуру</b> рассчитывает потребность. Если <b>J.ПроверкаНаЛимит</b> истинна, <b>Agent.СлужбаСписания</b> выполняет <b>V.УменьшитьОстаток</b> и передает команду <b>Receiver.СкладскойУчет</b>.</p>
+                    </div>
+                    <div class="tz-item">
+                        <br><h4>2.2. Представление знаний</h4>
+                        <br><h5 style="color: #adff2f;">2.2.1. ПЗ через семантические сети</h5>
+                            <p class="text-zinc-400 text-sm">Применяются для наглядного структурирования отношений между сущностями в Системе.</p>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                                <span class="text-zinc-400 text-sm"><b>Структура</b>: Узлы — сущности (Продукт, Ингредиент, Поставщик, Рецептура). Дуги — отношения (СОСТОИТ ИЗ, ПОСТАВЛЯЕТ, СПИСЫВАЕТСЯ ПРИ).</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">·</span>
+                            </li>
+                    </div>
+                    <div class="tz-item">
+                            <br><h5 style="color: #adff2f;">2.2.2. ПЗ через фреймы самой сети Петри</h5>
+                            <p class="text-zinc-400 text-sm">Фреймовое представление элементов сети Петри позволяет хранить все параметры модели в структурированной форме.</p>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">○</span>
+                                <span><b>Фрейм "Позиция"</b>: Описание мест в сети.</span>
+                            </li>
+                            <li>
+                                <span class="text-accent mr-3 mt-1 font-bold"></span>
+                                <span class="text-zinc-400 text-sm">Слот: Имя (Значение: Ингредиенты_доступны)</span>
+                            </li>
+                            <li>
+                                <span class="text-accent mr-3 mt-1 font-bold"></span>
+                                <span class="text-zinc-400 text-sm">Слот: Тип_Токена (Значение: Сырье)</span>
+                            </li>
+                            <li>
+                                <span class="text-accent mr-3 mt-1 font-bold"></span>
+                                <span class="text-zinc-400 text-sm">Слот: Начальное_Количество (Значение: N)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-3 mt-1 font-bold">○</span>
+                                <span><b>Фрейм "Переход"</b>: Описание событий.</span>
+                            </li>
+                            <li>
+                                <span class="text-accent mr-3 mt-1 font-bold"></span>
+                                <span class="text-zinc-400 text-sm">Слот: Имя (Значение: Оплата_заказа)</span>
+                            </li>
+                            <li>
+                                <span class="text-accent mr-3 mt-1 font-bold"></span>
+                                <span class="text-zinc-400 text-sm">Слот: Условие_Срабатывания (Значение: Токен в Заказ_Сформирован)</span>
+                            </li>
+                            <li>
+                                <span class="text-accent mr-3 mt-1 font-bold"></span>
+                                <span class="text-zinc-400 text-sm">Слот: Действие (Значение: Активация V.Списать_сырье)</span>
+                            </li>
+                            </div>
+                    </div>
+    </div>
+</section>
+
+        <section id="footer" class="mb-32">
+            <span class="section-tag">/ Documentation</span>
             <div class="expand-block">
                 <div class="expand-header" onclick="toggleBlock(this)">
-                    <h3>Представление знаний</h3>
+                    <h3>Документация проекта</h3>
                     <span class="expand-icon">+</span>
                 </div>
-                <div class="expand-content">
-                    <div class="uml-code">Латте -> [СОСТОИТ ИЗ] -> Молоко, Зерна.</div>
+                <div class="tz-section-card">
+                    <div class="tz-grid">
+                        <footer class="doc-footer">
+                            <div class="doc-grid">
+                                <div class="doc-card" onclick="showView('tz')">
+                                    <h4>Docs / 01</h4>
+                                    <p>ТЗ Проекта</p>
+                                </div>
+                                <div class="doc-card" onclick="showView('uml')">
+                                    <h4>Docs / 02</h4>
+                                    <p>UML Диаграммы</p>
+                                </div>
+                                <div class="doc-card" onclick="showView('frames')">
+                                    <h4>Docs / 03</h4>
+                                    <p>Фрейм-компоненты</p>
+                                </div>
+                                <div class="doc-card" onclick="showView('modeling')">
+                                    <h4>Docs / 04</h4>
+                                    <p>Реализация</p>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
                 </div>
             </div>
         </section>
@@ -372,6 +1188,7 @@
     <script>
         const authScreen = document.getElementById('auth-screen');
         const loginForm = document.getElementById('login-form');
+        const logoutTrigger = document.getElementById('logout-trigger');
 
         // Обработка логина
         loginForm.addEventListener('submit', (e) => {
@@ -380,7 +1197,12 @@
             document.body.classList.remove('overflow-hidden');
         });
 
-        // Навигация без перезагрузки и прыжков
+        logoutTrigger.addEventListener('click', () => {
+            authScreen.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            mainContent.scrollTop = 0;
+        });
+
         function handleNavClick(e, id) {
             e.preventDefault();
             scrollToId(id);
@@ -412,7 +1234,36 @@
             });
         }
 
-        // Подсветка при скролле
+        function showView(viewId) {
+    const mainSections = ['about', 'tz', 'plan', 'frames', 'modeling'];
+
+    if (viewId !== 'main') {
+        mainSections.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.classList.add('hidden');
+        });
+        
+        document.querySelectorAll('section[id^="view-"]').forEach(v => v.classList.add('hidden'));
+        
+        const target = document.getElementById('view-' + viewId);
+        if(target) target.classList.remove('hidden');
+    } 
+    else {
+        mainSections.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.classList.remove('hidden');
+        });
+        document.querySelectorAll('section[id^="view-"]').forEach(v => v.classList.add('hidden'));
+    }
+
+    window.scrollTo(0, 0);
+}
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showView('main');
+        });
+
         const sections = document.querySelectorAll('section');
         window.addEventListener('scroll', () => {
             if (authScreen.classList.contains('hidden')) {
